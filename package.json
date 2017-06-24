@@ -1,6 +1,6 @@
 {
   "name": "erschema-suite",
-  "version": "1.0.10",
+  "version": "1.0.11",
   "description": "Simple functions for generating entity relationship schema standard",
   "scripts": {
     "clean": "rm -rf erschema && rm -rf action-handlers && rm -rf normalize && rm -rf reducer && rm -rf selectors && rm -rf actions",
