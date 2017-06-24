@@ -1,0 +1,16 @@
+{
+  "presets": ["es2015", "stage-0"],
+  "plugins": [
+    "transform-flow-strip-types",
+    ["module-resolver", {
+      "alias": {
+        "erschema": "./src/erschema",
+        "erschema-action-handlers": "./src/action-handlers",
+        "erschema-actions": "./src/actions",
+        "erschema-normalize": "./src/normalize",
+        "erschema-reducer": "./src/reducer",
+        "erschema-selectors": "./src/selectors"
+      }
+    }]
+  ]
+}

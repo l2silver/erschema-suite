@@ -1,0 +1,9 @@
+[libs]
+flow-typed
+[options]
+module.name_mapper='^erschema' -> '<PROJECT_ROOT>/src/erschema'
+module.name_mapper='^erschema-normalize$' -> '<PROJECT_ROOT>/src/normalize'
+module.name_mapper='^erschema-actions$' -> '<PROJECT_ROOT>/src/actions'
+module.name_mapper='^erschema-action-handlers$' -> '<PROJECT_ROOT>/src/action-handlers'
+module.name_mapper='^erschema-selectors$' -> '<PROJECT_ROOT>/src/selectors'
+module.name_mapper='^erschema-reducer$' -> '<PROJECT_ROOT>/src/reducer'
