@@ -76,11 +76,11 @@ export class PageActions {
     }, {})
     
     this.actions = {
-      create: (entity) => entityActions.create('properties', {...entity, id: name}),
-      update: (entity) => entityActions.update('properties', {...entity, id: name}),
-      remove: () => entityActions.remove('properties', name),
+      create: (entity) => entityActions.create('pages', {...entity, id: name}),
+      update: (entity) => entityActions.update('pages', {...entity, id: name}),
+      remove: () => entityActions.remove('pages', name),
       get: (entity) => retypeAction(
-        `${resourceActions.get('properties')}_${actionifyName(name)}`,
+        `${resourceActions.get('pages')}_${actionifyName(name)}`,
         normalizeToStore(entity, 'pages', schema, firstSchema[name])
       ),
       getRelated: (relationshipName, entities) => {
