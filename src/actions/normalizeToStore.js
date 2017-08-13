@@ -2,11 +2,12 @@
 import normalize from 'erschema-normalize'
 import {batchActions} from 'redux-batched-actions'
 import {entityActions, relationshipActions} from 'erschema-action-handlers'
+import {get} from 'lodash';
 
 import type {$schemaWithRelationshipsArray, $entitySchemaWithRelationshipsArray} from 'erschema/types'
 
 
-export default function normalizeToStore(entity: Object, name: string, schema: $schemaWithRelationshipsArray, firstSchema?: $entitySchemaWithRelationshipsArray){
+export default function normalizeToStore(entity: Object, name: string, schema: $schemaWithRelationshipsArray, firstSchema?: $entitySchemaWithRelationshipsArray, options?: Object = {}){
   const {entities: allEntities, relationships: allRelationships} = normalize(entity, name, schema, firstSchema)
   const entitiesForStore = Object.keys(allEntities).reduce((finalResult, entityName)=>{
     const entities = allEntities[entityName]
@@ -25,7 +26,9 @@ export default function normalizeToStore(entity: Object, name: string, schema: $
         finalResult.push({id: entityId, value: relationship[entityId]})
         return finalResult
       }, [])
-      finalResult.push(relationshipActions.index(entityName, {name: relationshipName, idValuePairs}))
+      
+      const relationshipActionName = get(options, `relationships.${entityName === 'pages' ? idValuePairs[0].id : entityName}.${relationshipName}.concat`) ? 'concatRelationship' : 'index'
+      finalResult.push(relationshipActions[relationshipActionName](entityName, {name: relationshipName, idValuePairs}))
       return finalResult
     }, allRelationshipActions)
     return allRelationshipActions
@@ -33,7 +36,7 @@ export default function normalizeToStore(entity: Object, name: string, schema: $
   return batchActions([...entitiesForStore, ...relationshipsForStore])
 }
 
-export function indexNormalizeToStore(entities: Object[], name: string, schema: $schemaWithRelationshipsArray, firstSchema?: $entitySchemaWithRelationshipsArray){
+export function indexNormalizeToStore(entities: Object[], name: string, schema: $schemaWithRelationshipsArray, firstSchema?: $entitySchemaWithRelationshipsArray, options?: {}){
   return batchActions(
     entities.map((entity)=>{
       return normalizeToStore(entity, name, schema, firstSchema)

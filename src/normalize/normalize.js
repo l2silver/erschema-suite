@@ -1,7 +1,7 @@
 // @flow
-import blacklist from 'blacklist'
+import blacklist from 'blacklist';
 import {relationshipTypes, getRelationships} from 'erschema'
-import pick from 'lodash.pick'
+import { pick } from 'lodash';
 import type {$schemaWithRelationshipsArray, $entitySchemaWithRelationshipsArray} from 'erschema/types'
 
 type $$id = string | number;

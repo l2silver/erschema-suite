@@ -46,7 +46,7 @@
     "redux-actions": "^2.0.1",
     "resource-action-types": "^1.0.1",
     "blacklist": "^1.1.4",
-    "lodash.pick": "^4.4.0",
+
     "redux": "^3.6.0",
     "redux-batched-actions": "^0.1.5",
     "redux-overlord": "^1.0.0",

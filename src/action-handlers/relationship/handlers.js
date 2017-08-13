@@ -68,7 +68,26 @@ export default {
       return state.setIn([relationshipName, `${id}`], relationshipValue)
     }
   },
-  
+  concatRelationship(mapOfRelationshipTypes: Object, mapOfRelationshipTypesById?: Object) {
+    return function (state: Map<string, any>, {payload, error}: Object) {
+      if (error) {
+        return state
+      }
+      const {name, idValuePairs} = payload.relationships
+      let relationshipType = mapOfRelationshipTypes[name]
+      return state.updateIn([name], relationships=>{
+        return idValuePairs.reduce((finalResult, {id, value})=>{
+          return finalResult.updateIn([`${id}`], (existingValues)=>{
+            if (existingValues) {
+
+              return existingValues.concat(value);
+            }
+            return new OrderedSet(value);
+          })
+        }, relationships)
+      })
+    }
+  },
   unlink(mapOfRelationshipTypes: Object, mapOfRelationshipTypesById?: Object) {
     return function (state: Map<string, any>, {payload, error}: Object) {
       if (error) {

@@ -63,6 +63,7 @@ export default function ({name, relationshipsSchema, defaultStateConfig = {}, ot
       [actionNames.link(name)]: handlers.link(mapOfRelationshipTypes),
       [actionNames.unlink(name)]: handlers.unlink(mapOfRelationshipTypes),
       [actionNames.createRelationship(name)]: handlers.createRelationship(mapOfRelationshipTypes),
+      [actionNames.concatRelationship(name)]: handlers.concatRelationship(mapOfRelationshipTypes),
       [actionNames.indexRelationship(name)]: handlers.indexRelationship(mapOfRelationshipTypes),
       [actionNames.reorder(name)]: handlers.reorder(mapOfRelationshipTypes),
       ...removeActions,
@@ -96,6 +97,7 @@ export function relationshipPageReducer({name, relationshipsSchema, defaultState
       [actionNames.link(name)]: handlers.link({}, mapOfRelationshipTypes),
       [actionNames.unlink(name)]: handlers.unlink({}, mapOfRelationshipTypes),
       [actionNames.createRelationship(name)]: handlers.createRelationship({}, mapOfRelationshipTypes),
+      [actionNames.concatRelationship(name)]: handlers.concatRelationship({}, mapOfRelationshipTypes),
       [actionNames.indexRelationship(name)]: handlers.indexRelationship({}, mapOfRelationshipTypes),
       ...removeActions,
       ...otherActions

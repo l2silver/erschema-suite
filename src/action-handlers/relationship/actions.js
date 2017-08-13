@@ -46,6 +46,12 @@ export default {
     }
     return createAction(actionNames.createRelationship(entityName))({relationship})
   },
+  concatRelationship(entityName: string, relationships: $relationships) {
+    if (relationships instanceof Error) {
+      return createAction(actionNames.concatRelationship(entityName))(relationships)
+    }
+    return createAction(actionNames.concatRelationship(entityName))({relationships})
+  },
   reorder(entityName: string, changeRelationshipOrder: $changeRelationshipOrder) {
     if (changeRelationshipOrder instanceof Error) {
       return createAction(actionNames.reorder(entityName))(changeRelationshipOrder)

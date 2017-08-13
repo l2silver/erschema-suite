@@ -11,6 +11,7 @@ import type {$schema} from 'erschema/types'
 type $$id = string | number
 
 const getRelatedName = (name)=>`GET_RELATED_${actionifyName(name)}`;
+const concatRelatedName = (name)=>`CONCAT_RELATED_${actionifyName(name)}`;
 
 export class Actions {
   constants: $$mapOf<string>;
@@ -49,6 +50,23 @@ export class Actions {
           return entityActions.get(entityName, entity)
         }
         return retypeAction(`GET_ADDITIONAL_ENTITY_PROPERTIES_${actionifyName(name)}`, normalizeToStore({id, ...entity}, name, schema))
+      },
+      concatRelated: (id, relationshipName, entities) => {
+        if (entities instanceof Error) {
+          return entityActions.get(name, entities)
+        }
+        return retypeAction(
+          `${concatRelatedName(name)}_${actionifyName(name)}`,
+          normalizeToStore({id, [relationshipName]: entities}, name, schema, undefined,
+          {
+            relationships: {
+              [name]: {
+                [relationshipName]: {
+                  concat: true
+                }
+              }
+            }
+          }))
       }
     }
   }
@@ -65,6 +83,7 @@ export class PageActions {
     remove: () => any,
     get: (ent: Object) => any,
     getRelated: (relationshipName: string, ents: Object[]) => any,
+    concatRelated: (relationshipName: string, ents: Object[]) => any,
   };
   constructor (preschema: $schema, prefirstSchema: $schema, name: string) {
     const schema = getSchemaWithRelationshipsArray(preschema)
@@ -88,8 +107,25 @@ export class PageActions {
           return entityActions.get(name, entities)
         }
         return retypeAction(
-          `${getRelatedName(name)}_${actionifyName(name)}`,
+          `${getRelatedName(name)}_${actionifyName(relationshipName)}`,
           normalizeToStore({[relationshipName]: entities}, 'pages', schema, firstSchema[name]))
+      },
+      concatRelated: (relationshipName, entities) => {
+        if (entities instanceof Error) {
+          return entityActions.get(name, entities)
+        }
+        return retypeAction(
+          `${concatRelatedName(name)}_${actionifyName(name)}`,
+          normalizeToStore({[relationshipName]: entities}, 'pages', schema, firstSchema[name],
+          {
+            relationships: {
+              [name]: {
+                [relationshipName]: {
+                  concat: true
+                }
+              }
+            }
+          }))
       }
     }
   }
