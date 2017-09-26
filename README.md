@@ -38,21 +38,118 @@ import {Record, Map} from 'immutable'
 
 ### Actions
 
-The standardize erschema actions for relationships are:
+#### The standardize erschema actions for relationships are:
 
-* index
 * link
 * unlink
 * createRelationship
+* indexRelationship
 * concatRelationship
 * reorder
 
-The standardized erschema actions for entities are:
+##### link
+
+Adds a relatedEntityId to a relationship for one-to-many relationships, or for one-to-one relationship, changes relatedEntityId value
+
+```
+// Relationship change for links one-to-many and one-to-one respectively
+{
+  [entityId]: [] ===> [relatedEntityId] || 0 ===> relatedEntityId 
+}
+```
+
+##### unlink
+
+Removes a relatedEntityId from a relationship for one-to-many relationships, or for one-to-one relationship, changes relatedEntityId value to 0
+
+```
+// Relationship change for links one-to-many and one-to-one respectively
+{
+  [entityId]: [relatedEntityId] ===> [] || relatedEntityId ===> 0
+}
+```
+
+##### createRelationship
+
+Creates a relationship entry for an entityId
+```
+// Relationship created for links one-to-many and one-to-one respectively
+{} ===> {
+        [entityId]: [relatedEntityId] || relatedEntityId 
+      }
+```
+
+##### indexRelationship
+
+Creates a relationship entry for multiple entity ids
+```
+// Relationship created for links one-to-many and one-to-one respectively
+{} ===> {
+        [entityId]: [relatedEntityId] || relatedEntityId ,
+        [entityId2]: [relatedEntityId2] || relatedEntityId2 ,
+        [entityId3]: [relatedEntityId3] || relatedEntityId3 
+      }
+```
+
+##### concatRelationship
+
+Adds multiple relatedEntityIds to an existing relationship for multiple
+```
+{
+  [entityId]: [relatedEntityId] ===> [relatedEntityId, relatedEntityId2, relatedEntityId3]
+}
+```
+
+##### reorder
+
+Reorders relationship
+```
+{
+  [entityId]: [relatedEntityId, relatedEntityId2, relatedEntityId3] ===> [relatedEntityId2, relatedEntityId, relatedEntityId3]
+}
+```
+
+#### The standardized erschema actions for entities are:
 
 * create
 * update
 * remove
 * get
 * index
-* getRelated
-* getAdditionalEntityProperties
+
+##### create
+
+creates an entity
+```
+{
+  data: {} ===> {
+                  [entityId]: entity 
+                }
+}
+```
+
+##### update
+
+updates an entity
+```
+{
+  data: {
+   [entityId]: entity ===> entity2
+  }
+}
+```
+
+##### remove
+
+removes an entity
+```
+{
+  data: {[entityId]: entity} ===> {}
+}
+```
+
+##### get/index
+
+gets for adding a single entity, or index for adding multiple entities of the same type.
+
+get and index are also special because these are the actions that do normalizing. So anytime you get an object, and it has nested entities in it, you must use either get or index to store the normalized data properly in the reducer
