@@ -171,3 +171,51 @@ class UserActions extends Actions {
 }
 export default new UserActions(USERS)
 ```
+
+### Selectors
+
+Selectors are a way of minimizing rerender cycles in react. See https://github.com/reactjs/reselect for more information
+
+Erschema ships with a Selectors class that comes with a basic set of selectors that can be used to access any part of the redux store, and they are as follows:
+
+* findEntity
+* getEntities
+* getRelatedEntityIds
+* getRelatedEntityId
+* findEntityData
+* findManyRelationshipData
+* findMonoRelationshipData
+
+#### findEntity
+
+Retrieve a single entity
+
+```
+// default idSelector is props.id
+this.findEntity(idSelector?: (state, props)=>id = (state, props)=>props.id)
+```
+
+#### getEntities
+
+Retrieves many entities
+
+```
+this.getEntity(idsSelector: (state, props)=>[id])
+```
+
+#### findRelatedEntityId
+
+Retrieve related entity id for one-to-one relationship
+
+```
+this.findRelatedEntityId(relationshipName: string, idSelector?: (state, props)=>id = (s,p)=>p.id)
+```
+
+#### getRelatedEntityIds
+
+Retrieve related entity id for one-to-one relationship
+
+```
+this.getRelatedEntityIds(relationshipName: string, idSelector?: (state, props)=>id = (s,p)=>p.id)
+```
+
