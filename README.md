@@ -153,3 +153,21 @@ removes an entity
 gets for adding a single entity, or index for adding multiple entities of the same type.
 
 get and index are also special because these are the actions that do normalizing. So anytime you get an object, and it has nested entities in it, you must use either get or index to store the normalized data properly in the reducer
+
+#### The Action Class
+
+Instead of calling the actions individually when ever they're needed, erschema-suite comes with an Actions class that stores the basic entity actions in the actions property of the class
+
+```
+// Using the get action stored in the Actions class
+const USERS = 'users'
+
+class UserActions extends Actions {
+  get = (id: number) => dispatch => {
+    return userService.get(id).then((user)=>{
+      dispatch(this.actions.get(user))
+    })
+  }
+}
+export default new UserActions(USERS)
+```
