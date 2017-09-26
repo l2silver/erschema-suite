@@ -36,6 +36,61 @@ import {Record, Map} from 'immutable'
 }
 ```
 
+#### Schemas
+
+Erschema uses a modified and flat version of https://github.com/paularmstrong/normalizr to not only normalize data, but also construct the structure of the redux-store
+
+```
+import {combineReducers} from 'redux'
+import erschemaReducer from 'erschema-suite/reducer'
+
+const usersSchema = {
+  idFunc: (entity)=>entity.id,
+  properties: {id: 0, name: ''},
+  modifier: (ent)=>ent,
+  Model: UserModel,
+  relationships: {
+    manyRelationships: {
+      friends: [
+        {
+          name: 'users',
+        }
+      ]
+    },
+    monoRelationships: {}
+  },
+}
+
+combineReducers({
+  ...otherReducers,
+  erschemaReducer({
+    schemas: {
+      users,
+    }
+  })
+})
+
+===> creates a redux store with the following structure
+
+{
+  ...otherReducers,
+  erschema: {
+    entities: Map<{
+      users: Map<{
+        data: Map<{}>
+      }>
+    }>,
+    relationships: Map<{
+      users: Map<{
+        friends: Map<{}>
+      }>
+    }>
+  }
+}
+
+```
+
+
 ### Actions
 
 #### The standardize erschema actions for relationships are:
@@ -219,3 +274,6 @@ Retrieve related entity id for one-to-one relationship
 this.getRelatedEntityIds(relationshipName: string, idSelector?: (state, props)=>id = (s,p)=>p.id)
 ```
 
+#### findEntityData, findMonoRelationshipData, findManyRelationshipData
+
+Get all of the respective entities, monoRelationships, and manyRelationships
